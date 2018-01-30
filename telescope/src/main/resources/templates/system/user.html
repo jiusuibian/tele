@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/bower_components/datatables.net-bs/css/dataTables.bootstrap.css}">
+<link rel="stylesheet" th:href="@{/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}">
+<link rel="stylesheet" th:href="@{/css/system/user.css}">
+<head th:include="include/imports :: links"></head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper  skin-yellow ">
+    <header th:replace="include/sys_header :: mainheader"></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside th:replace="include/siderbar-main :: sidebar-main('user')"></aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                用户管理
+                <small>用户列表</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-user"></i> 用户管理</a></li>
+                <li class="active">用户列表</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-lg-12 col-xs-12">
+                    <div class="box box-widget">
+                        <div class="box-body">
+                            <form class="form-horizontal" id="sf">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2 " for="create_start_time">创建日期（起）</label>
+                                            <!--指定 date标记-->
+                                            <div class='input-group date col-sm-4' id='start'>
+                                                <input type='text' class="form-control" id="create_start_time" name="create_start_time" readonly/>
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2 ">状态</label>
+                                            <div class=" col-sm-4">
+                                                <select id="status" name="status" class="form-control">
+                                                    <option value="-1">全部</option>
+                                                    <option value="0">正常</option>
+                                                    <option value="1">锁定</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2 ">创建日期（止）</label>
+                                            <!--指定 date标记-->
+                                            <div class='input-group date col-sm-4' id='end'>
+                                                <input type='text' class="form-control" id="create_end_time" name="create_end_time" readonly/>
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2 ">用户名</label>
+                                            <div class=" col-sm-4">
+                                                <input type='text' class="form-control " id="username" name="username"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <button id="user_search" class="btn btn-primary pull-right">
+                                <i class="fa fa-search"></i> 搜索
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-xs-12">
+                    <div class="box box-widget">
+                        <div class="box-body">
+                            <div class="add-user">
+                                <button id="user_add" th:attr="link=${springMacroRequestContext.contextPath}"
+                                        class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> 添加
+                                </button>
+                                <!--<a th:href="@{/system/user/add/view}" title="新增帐号"><span class="glyphicon glyphicon-plus"></span></a>-->
+                            </div>
+                            <table id="table_local" class="table table-bordered table-striped"
+                                   th:attr="link=${springMacroRequestContext.contextPath}" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>帐号名</th>
+                                    <!--<th>密码</th>-->
+                                    <th>最近登陆时间</th>
+                                    <th>登陆错误次数</th>
+                                    <th>状态</th>
+                                    <th>用户描述</th>
+                                    <th>创建时间</th>
+                                    <th>修改时间</th>
+                                    <th>创建者</th>
+                                    <th>修改者</th>
+                                    <th>分配角色</th>
+                                    <th>修改</th>
+                                    <th>删除</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <footer th:replace="include/footer :: footer"></footer>
+</div>
+<!-- ./wrapper -->
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/bower_components/datatables.net/js/jquery.dataTables.js}"></script>
+<script th:src="@{/bower_components/datatables.net-bs/js/dataTables.bootstrap.js}"></script>
+
+<script th:src="@{/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/plugins/bootstrap-datetimepicker/js/loacal/bootstrap-datetimepicker.zh-CN.js}"></script>
+
+<script th:src="@{/js/system/user.js}"></script>
+
+</body>
+</html>

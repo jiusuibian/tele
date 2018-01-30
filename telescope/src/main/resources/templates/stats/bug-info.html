@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+<link rel="stylesheet" th:href="@{/css/stats/bug-info.css}">
+<body class="layout-boxed">
+    <div class="wrapper">
+        <div class="main">
+
+
+        <section class="content">
+            <div class="box box-warning">
+                <div class="box-header ">
+                    <h3 class="box-title">崩溃详情</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <label class="col-md-1" >崩溃时间：</label><span class="text-muted col-md-3" th:text="${rep.initInfo.t_time}"></span>
+                        <label class="col-md-1">应用版本：</label><span class="text-muted badge bg-green col-md-1"  th:text="${rep.initInfo.t_app_ver}"></span>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-1" >设备号：</label><span class="text-muted col-md-3" th:text="${rep.initInfo.t_dev_id}"></span>
+                        <label class="col-md-1">SDK版本：</label><span class="text-muted badge bg-green col-md-1" th:text="${rep.initInfo.t_sdk_ver}"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="box box-warning">
+                <div class="box-header ">
+                    <h3 class="box-title">崩溃轨迹</h3>
+                </div>
+                <div class="box-body">
+                    <div class="timelinecontainer">
+                        <ul class="timeline">
+
+                            <!-- timeline time label -->
+                            <li class="time-label">
+                                <span class="bg-red">   &nbsp; &nbsp; &nbsp;&nbsp;步骤 &nbsp; &nbsp;</span>
+                            </li>
+                            <!-- /.timeline-label -->
+
+                            <!-- timeline item -->
+                            <li th:each="crashStap,crashStat:${rep.crashStapList}">
+                                <!-- timeline icon -->
+                                <i class="fa bg-blue" th:text="${crashStat.index + 1}">1</i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> <span th:text="${crashStap.t_time}">12:05</span></span>
+
+                                    <h3 class="timeline-header" th:text="${crashStap.t_page}"></h3>
+
+                                    <div class="timeline-body">
+                                        <label>事件：</label><span th:text="${crashStap.t_evt}"></span>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <!-- end timeline item -->
+                        </ul>
+                        <div class="unfold-field">
+                            <div class="unflod-field_mask"></div>
+                            <div class="unfold-field_text" onclick="$('.timelinecontainer').css('max-height','100%');$(this).parent().hide()"><span>查看所有</span><span class="fa fa-chevron-down"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-warning">
+                <div class="box-header ">
+                    <h3 class="box-title"> 调用堆栈</h3>
+                </div>
+                <div class="box-body">
+                    <pre><span class="text-danger" th:text="${rep.t_stackinfo}"></span></pre>
+                </div>
+            </div>
+            <div class="box box-warning">
+                <div class="box-header ">
+                    <h3 class="box-title">上下文信息</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table">
+                        <tr>
+                            <td class="context-table-title">设备：</td>
+                            <td><span id="tab_device_name" th:text="${rep.initInfo.t_dev_name}"></span></td>
+                            <td class="context-table-title">剩余内存：</td>
+                            <td><span id="tab_surplus_mem" th:text="${rep.initInfo.t_free_mem}"></span></td>
+                            <td class="context-table-title">CPU用量：</td>
+                            <td><span id="tab_used_cpu" th:text="|${rep.initInfo.t_cpu_usage}%|"></span></td>
+                            <td class="context-table-title">设备剩余空间：</td>
+                            <td><span id="tab_surplus_ram" th:text="${rep.initInfo.t_free_space}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="context-table-title">CPU型号：</td>
+                            <td><span id="tab_cpu_model" th:text="${rep.initInfo.t_cpu_type}"></span></td>
+                            <td class="context-table-title">CPU指令集：</td>
+                            <td><span id="tab_arch" th:text="${rep.initInfo.t_cpu_set}"></span></td>
+                            <td class="context-table-title">是否ROOT：</td>
+                            <td><span id="tab_is_prison" class="badge" th:classappend="${rep.initInfo.t_isroot}?'bg-green':'bg-red'" th:text="${rep.initInfo.t_isroot}? '是' : '否'"></span></td>
+                            <td class="context-table-title">剩余电量：</td>
+                            <td><span id="tab_power"  th:text="${rep.initInfo.t_free_power}"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="context-table-title">系统版本：</td>
+                            <td><span id="tab_sys_version"  th:text="${rep.initInfo.t_os_type}"></span></td>
+                            <td class="context-table-title">应用版本：</td>
+                            <td><span id="tab_app_version"   th:text="${rep.initInfo.t_app_ver}"></span></td>
+                            <td class="context-table-title">GPS：</td>
+                            <td><span id="tab_gps" class="badge" th:classappend="${rep.initInfo.t_gps_on}?'bg-green':'bg-red'" th:text="${rep.initInfo.t_gps_on}? '是' : '否'"></span></td>
+                            <td class="context-table-title">应用UI朝向：</td>
+                            <td><span id="tab_orui"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="context-table-title">运营商：</td>
+                            <td><span id="tab_carrier"  th:text="${rep.initInfo.t_telecom_opt}"></span></td>
+                            <td class="context-table-title">接入方式：</td>
+                            <td><span id="tab_connect_type"  th:text="${rep.initInfo.t_net_mode}"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </section>
+        <footer class="my-foot">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <div class="text-center">
+                <strong>Copyright &copy; 2017 上海东普信息科技有限公司.</strong> All rights
+                reserved.
+            </div>
+        </footer>
+        </div>
+    </div>
+<!-- ./wrapper -->
+<div th:replace="include/imports :: scripts"></div>
+</body>
+</html>

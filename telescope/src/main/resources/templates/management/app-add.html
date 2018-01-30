@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" th:href="@{/css/management/app-add.css}">
+<head th:include="include/imports :: links"></head>
+<body>
+<div class="container">
+    <form id="af">
+        <div class="form-group">
+            <label for="appname">应用名:</label>
+            <input type="text" name="appname" class="form-control" id="appname">
+        </div>
+        <div class="form-group">
+            <label for="apptype">应用类型:</label>
+            <input type="text" class="form-control" id="apptype"th:value="${appType}" readonly>
+        </div>
+        <input type="hidden" name="apptype" class="form-control" th:value="${appType}=='mobile' ? 'M':'C'">
+        <div class="form-group">
+            <label for="ostype"> 系统类型：</label>
+            <select name="ostype" id="ostype" class="form-control" th:switch="${appType}">
+                <div th:case="mobile">
+                    <option value ="A">Android</option>
+                    <option value ="I">ios</option>
+                </div>
+                <div th:case="cs">
+                    <option value ="W">Windows</option>
+                    <option value ="L">Linux</option>
+                </div>
+            </select>
+            <!--<div id="ostype" th:switch="${appType}">-->
+            <!--<div th:case="mobile" >-->
+            <!--<input type="radio" name="ostype" value="A" checked> Android-->
+            <!--<input type="radio" name="ostype" value="I"> ios-->
+            <!--</div>-->
+            <!--<div th:case="cs">-->
+            <!--<input type="radio" name="ostype" value="W" checked> Windows-->
+            <!--<input type="radio" name="ostype" value="L"> Linux-->
+            <!--</div>-->
+            <!--</div>-->
+
+        </div>
+        <div class="text-right">
+            <input type="submit" value="提交" id="sub" th:attr="link=${springMacroRequestContext.contextPath}+'/'+${appType}" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/js/management/app-add.js}"></script>
+</body>
+</html>

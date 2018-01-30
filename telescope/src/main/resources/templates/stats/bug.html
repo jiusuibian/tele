@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+<link rel="stylesheet" th:href="@{/bower_components/datatables.net-bs/css/dataTables.bootstrap.css}">
+<link rel="stylesheet" th:href="@{/css/management/overview.css}">
+<body class="hold-transition sidebar-mini">
+<div class="wrapper  skin-yellow ">
+
+    <header th:replace="include/header :: mainheader"></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside th:replace="include/siderbar-main :: sidebar-main('bug')"> </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="dimension-type">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                统计分析
+                <small>崩溃</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> 统计分析</a></li>
+                <li class="active">崩溃</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div th:replace="include/controls-bar :: controls-bar('bug')"> </div>
+
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-lg-12 col-xs-12">
+                    <div class="box box-widget">
+                        <div class="box-header" >
+                            <h3 class="box-title pull-left">维度：</h3>
+                            <ul class="nav nav-pills ">
+                                <li v-bind:class="{active:dimension == 'fatal'}" @click="switchDimension('fatal')"><a href="#">崩溃汇总</a></li>
+                                <li v-bind:class="{active:dimension == 'version'}" @click="switchDimension('version')"><a href="#">版本分布</a></li>
+                                <li v-bind:class="{active:dimension == 'device'}" @click="switchDimension('device')"><a href="#">设备分布</a></li>
+                                <li v-bind:class="{active:dimension == 'os'}" @click="switchDimension('os')"><a href="#">系统分布</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.box-header -->
+
+                        <div class="box-body" >
+                            <div class="row">
+                                <div class="col-lg-3 col-xs-6">
+                                    <div class="box box-warning">
+                                        <div class="box-header with-border">
+                                            <div class="box-title">崩溃一览</div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="progress" v-for="(value,key) in percentMap">
+                                                <span style="position: absolute">{{key}}</span>
+                                                <div class="progress-bar progress-bar-primary progress-lg" v-bind:style="{ width: value }">
+                                                </div>
+                                                <span style="position: absolute;right:10px">{{value}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-xs-9">
+                                    <div class="box box-warning">
+                                        <div class="box-header with-border">
+                                            <div class="box-title">崩溃展示</div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div id="bugchart"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xs-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-green"><i class="fa fa-bug"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Bugs</span>
+                                                    <span class="info-box-number">{{summeryinfo.bugs}}</span>
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-red"><i class="fa fa-warning"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">崩溃数</span>
+                                                    <span class="info-box-number">{{summeryinfo.fatals}}</span>
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">影响用户</span>
+                                                    <span class="info-box-number">{{summeryinfo.userimpacts}}</span>
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-xs-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-aqua"><i class="fa fa-check-circle"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">问题修复</span>
+                                                    <span class="info-box-number">{{summeryinfo.solves}}</span>
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table id="table_local" class="table table-bordered table-striped"
+                                           th:attr="link=${springMacroRequestContext.contextPath}" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>BUGS</th>
+                                            <th>描述</th>
+                                            <th>app版本</th>
+                                            <th>发生时间</th>
+                                            <th>状态</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer th:replace="include/footer :: footer"></footer>
+</div>
+<!-- ./wrapper -->
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/bower_components/datatables.net/js/jquery.dataTables.js}"></script>
+<script th:src="@{/bower_components/datatables.net-bs/js/dataTables.bootstrap.js}"></script>
+<script th:src="@{/js/stats/bug.js}"></script>
+</body>
+</html>

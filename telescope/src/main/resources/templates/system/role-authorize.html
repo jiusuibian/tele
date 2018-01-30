@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+
+<body>
+<div class="container">
+
+    <div id="menu-tree"></div>
+    <form class="form-horizontal" id="mf">
+        <input type="hidden" name="role_id" id="role_id" th:value="${role_id}">
+        <div class="text-right">
+            <input type="button" class="btn btn-info" id="sub"
+                   th:attr="link=${springMacroRequestContext.contextPath}" value="提交">
+        </div>
+
+    </form>
+</div>
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/plugins/bootstrap-treeview/js/bootstrap-treeview.min.js}"></script>
+<script th:src="@{/js/system/role-authorize.js}"></script>
+</body>
+</html>

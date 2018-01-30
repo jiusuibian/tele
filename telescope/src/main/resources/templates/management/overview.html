@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper  skin-yellow ">
+
+    <header th:replace="include/header :: mainheader"></header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside th:replace="include/siderbar-main :: sidebar-main('overview')"> </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                应用概览
+                <small>我的应用</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">应用概览</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <!--/*@thymesVar id="apps" type=""*/-->
+                <div class="col-lg-3 col-xs-6" th:each="app : ${apps}">
+                    <!-- small box -->
+                    <div class="small-box" th:classappend="${#strings.equals(app.ostype,'A')}?'bg-green':(${#strings.equals(app.ostype,'I')}?'bg-aqua':(${#strings.equals(app.ostype,'W')}?'bg-light-blue':'bg-yellow'))">
+                        <div class="inner">
+                            <h3 th:text="${app.appname}"></h3>
+                            <p>
+                                状态:<span th:text="${app.status}=='0'? '正常':'锁定'"></span>
+                            </p>
+
+                            <p th:text="|appKey:${app.appkey}|"></p>
+                        </div>
+
+                        <a href="#" class="app_delete fa fa-close close-btn" th:attr="appname=${app.appname},appid=${app.appid}"></a>
+                        <a href="#" class="app_update fa fa-edit edit-btn" th:attr="appid=${app.appid}"></a>
+                        <div class="icon" th:switch="${app.ostype}">
+                        <i class="fa fa-android" th:case="A"></i>
+                        <i class="fa fa-apple" th:case="I"></i>
+                        <i class="fa fa-windows" th:case="W"></i>
+                        <i class="fa fa-linux" th:case="L"></i>
+                            <!--<i class="fa "  th:classappend="${#strings.equals(app.ostype,'A')}?'fa-android':(${#strings.equals(app.ostype,'I')}?'fa-apple':'fa-tv')"></i>-->
+                        </div>
+                        <a th:href="@{/{appType}/app/{appid}/stats/bug?duration=30m&version=All(appType=${appType},appid=${app.appid})}" class="small-box-footer">查看分析 <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-xs-3">
+                    <!--/*@thymesVar id="appType" type=""*/-->
+                    <div class="add-box" id="app_add" th:attr="link=${springMacroRequestContext.contextPath}+'/'+${appType}">
+                        <i class="ion ion-plus-round" onclick=""></i>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer th:replace="include/footer :: footer"></footer>
+</div>
+<link rel="stylesheet" th:href="@{/css/management/overview.css}">
+<!-- ./wrapper -->
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/js/management/overview.js}"></script>
+</body>
+</html>

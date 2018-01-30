@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+<body>
+<div class="container">
+    <!-- form start -->
+    <form class="form-horizontal" id="af">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>是否授权</th>
+                <th>角色名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item:${roles}">
+                <td><input type="checkbox" th:checked="${item.checked}" name="role_ids" th:value="${item.role_id}"/></td>
+                <td th:text="${item.role_name}">角色名称</td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="hidden" name="username" th:value="${username}">
+        <div class="text-right">
+            <input type="button" class="btn btn-info" id="sub"
+                   th:attr="link=${springMacroRequestContext.contextPath}" value="提交">
+        </div>
+
+    </form>
+</div>
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/js/system/user-authorize.js}"></script>
+</body>
+</html>

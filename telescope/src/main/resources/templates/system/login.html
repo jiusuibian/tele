@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/imports :: links"></head>
+<body class="" th:background="@{/img/bg.jpg}" style=" background-repeat: no-repeat;  background-size: cover;">
+<div class="hold-transition skin-yellow sidebar-mini">
+
+        <div class="login-box" style="margin-top:10%">
+            <div class="login-logo">
+                <a href="#" class="text-yellow"><b>Telescope</b></a>
+            </div>
+            <!-- /.login-logo -->
+            <div class="login-box-body">
+                <p class="login-box-msg">登陆使用 Telescope</p>
+
+                <form th:action="@{/login}" method="post" th:object="${user}">
+                    <div class="form-group has-error" th:if="${message}">
+                        <label  class="control-label"><i class="fa fa-times-circle-o"></i> <span th:text="${message}"></span></label>
+                    </div>
+                    <div class="form-group has-feedback" th:classappend="${#fields.hasErrors('username')}?'has-error':''">
+                        <label th:if="${#fields.hasErrors('username')}" class="control-label" th:for="*{username}"><i class="fa fa-times-circle-o"></i> <span th:text="${#fields.errors('username')}"></span></label>
+                        <input type="text" th:field="*{username}" class="form-control"  placeholder="输入用户名" >
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback" th:classappend="${#fields.hasErrors('password')}?'has-error':''">
+                        <label th:if="${#fields.hasErrors('password')}" class="control-label" th:for="*{password}"><i class="fa fa-times-circle-o"></i> <span th:text="${#fields.errors('password')}"></span></label>
+                        <input type="password" id="show-password" class="form-control"  placeholder="输入密码" >
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <input type="hidden" id="password" th:field="*{password}"/>
+                    <div class="row">
+                        <div class="col-xs-8">
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-4">
+                            <button type="submit" class="btn btn-warning btn-block btn-flat text-white">登陆</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+            </div>
+            <!-- /.login-box-body -->
+        </div>
+</div>
+<footer style="padding:15px; color: white">
+   <div class="text-center text-gray">
+      Copyright &copy; 2017 上海东普信息科技有限公司.All rights reserved.
+    </div>
+</footer>
+<!-- ./wrapper -->
+<div th:replace="include/imports :: scripts"></div>
+<script th:src="@{/js/system/login.js}"></script>
+</body>
+</html>

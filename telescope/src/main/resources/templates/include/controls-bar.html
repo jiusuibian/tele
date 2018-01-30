@@ -1,0 +1,49 @@
+<div th:fragment="controls-bar (menuId)">
+    <div class="row">
+        <div class="col-lg-12 col-xs-12">
+            <div class="box box-widget">
+                <div class="box-header ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-warning" th:each="a : ${session.apps}" th:if="${#strings.equals(appid,a.appid)}" th:text="${a.appname}"></button>
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li th:each="a : ${session.apps}"><a th:href="@{/{appType}/app/{appid}/stats/{menuId}?duration={duration}&version={version}(menuId=${menuId},appType=${appType},appid=${a.appid},duration=${duration},version=${version})}" th:text="${a.appname}"></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning" th:text="|版本 ${version}|"></button>
+                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ><a th:href="@{/{appType}/app/{appid}/stats/{menuId}?duration={duration}&version=All(menuId=${menuId},appType=${appType},appid=${appid},duration=${duration})}" >All</a></li>
+                                <li th:each="v : ${versions}"><a th:href="@{/{appType}/app/{appid}/stats/{menuId}?duration={duration}&version={version}(menuId=${menuId},appType=${appType},appid=${appid},duration=${duration},version=${v})}" th:text="${v}"></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning" th:each="d : ${session.durations}" th:if="${#strings.equals(duration,d.key)}" th:text="|最近${d.value}|"></button>
+                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li th:each="d : ${session.durations}"><a th:href="@{/{appType}/app/{appid}/stats/{menuId}?duration={duration}&version={version}(menuId=${menuId},appType=${appType},appid=${appid},duration=${d.key},version=${version})}" th:text="${d.value}"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var currentAppid = [[${appid}]];
+        var currentVersion = [[${version}]];
+        var currentDuration = [[${duration}]];
+        var baseUrl = [[|/telescope/${appType}/app/${appid}/stats/${menuId}|]];
+    </script>
+</div>

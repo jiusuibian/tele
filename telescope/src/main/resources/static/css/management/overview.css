@@ -1,0 +1,19 @@
+.close-btn{
+    position:absolute;
+    top:5px;
+    right:5px;
+    display: none;
+
+}
+.edit-btn{
+    position:absolute;
+    top:5px;
+    right:30px;
+    display: none;
+}
+
+.small-box:hover .close-btn,.small-box:hover .edit-btn{
+    display: block;
+    cursor: hand;
+    z-index: 999;
+}
