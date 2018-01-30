@@ -5,6 +5,7 @@ import com.yd.telescope.system.domain.Menu;
 import com.yd.telescope.system.service.MenuService;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -67,6 +68,11 @@ public class ShiroConfiguration {
 //      return filterRegistration;
 //  }
 
+//    @Bean(name = "lifecycleBeanPostProcessor")
+//    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+//        return new LifecycleBeanPostProcessor();
+//    }
+
     @Bean
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
@@ -84,7 +90,7 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
+    public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
         aasa.setSecurityManager(securityManager);
         return aasa;
@@ -103,10 +109,16 @@ public class ShiroConfiguration {
         //filterChainDefinitionMap.put("/user", "authc");// 这里为了测试，只限制/user，实际开发中请修改为具体拦截的请求规则
         // anon：它对应的过滤器里面是空的,什么都没做
         logger.info("##################从数据库读取权限规则，加载到shiroFilter中##################");
-        List<Menu> all = menuService.findAll();
         filterChainDefinitionMap.put("/login", "anon");
-//        filterChainDefinitionMap.put("/to_register", "anon");
-        filterChainDefinitionMap.put("/**", "anon");//anon 可以理解为不拦截
+        List<Menu> menus = menuService.findAll();
+
+        for (Menu menu: menus) {
+            System.out.println(menu.getUrl() + menu.getPerms());
+            filterChainDefinitionMap.put(menu.getUrl(), "authc,perms[" + menu.getPerms()+ "]");//anon 可以理解为不拦截
+        }
+//        filterChainDefinitionMap.put("/system/user/view", "authc,perms[user:view]");//anon 可以理解为不拦截
+//        filterChainDefinitionMap.put("/system/role/view", "authc,perms[role:view]");
+//        filterChainDefinitionMap.put("/system/menu/view", "authc,perms[menu:view]");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
     }

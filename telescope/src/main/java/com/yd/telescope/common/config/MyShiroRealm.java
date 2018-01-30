@@ -34,18 +34,18 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("##################执行Shiro权限认证##################");
         //获取当前登录输入的用户名，等价于(String) principalCollection.fromRealm(getName()).iterator().next();
-        String loginName = (String)super.getAvailablePrincipal(principalCollection);
+        String loginName = ((User)super.getAvailablePrincipal(principalCollection)).getUsername();
         //到数据库查是否有此对象
         User user=userRepository.findOne(loginName);// 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         if(user!=null){
             //权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
             //用户的角色集合
-            info.setRoles(user.getRoleNames());
+            info.setRoles(user.getRoleIds());
             //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
             Set<Role> roleList= user.getRoles();
             for (Role role : roleList) {
-                info.addStringPermissions(role.getMenuNames());
+                info.addStringPermissions(role.getPerms());
             }
             // 或者按下面这样添加
             //添加一个角色,不是配置意义上的添加,而是证明该用户拥有admin角色

@@ -22,6 +22,5 @@ public class TelescopeWebConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/system/role/add/view").setViewName("/system/role-add");
         registry.addViewController("/system/menu/add/view").setViewName("/system/menu-add");
         registry.addViewController("/system/icon/view").setViewName("/system/FontIcoList");
-//        registry.addViewController("/app/update/view").setViewName("/management/app-update");
     }
 }

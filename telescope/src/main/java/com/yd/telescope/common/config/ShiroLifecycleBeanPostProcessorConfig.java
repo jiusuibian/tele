@@ -6,11 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ShiroLifecycleBeanPostProcessorConfig {
-    /**
-     * Shiro生命周期处理器
-     *
-     * @return
-     */
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();

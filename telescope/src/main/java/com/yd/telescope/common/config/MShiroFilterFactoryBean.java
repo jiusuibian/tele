@@ -57,6 +57,7 @@ public class MShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 
     private final class MSpringShiroFilter extends AbstractShiroFilter {
 
+
         protected MSpringShiroFilter(WebSecurityManager webSecurityManager, FilterChainResolver resolver) {
             super();
             if (webSecurityManager == null) {
